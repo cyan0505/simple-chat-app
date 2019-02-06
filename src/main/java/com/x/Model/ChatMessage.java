@@ -1,37 +1,29 @@
 package com.x.Model;
 
+import lombok.Data;
 
+import javax.persistence.*;
+
+@Data
+@Entity
+@Table(name = "messages")
 public class ChatMessage {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long messageId;
     private String content;
     private String sender;
-    private MessageType type;
+    private String type;
+    private String sendTime;
 
-    public enum MessageType{
-        CHAT, LEAVE, JOIN
-    }
+    public ChatMessage(){}
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
+    public ChatMessage(String content, String sender, String type, String sendTime){
         this.content = content;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
         this.sender = sender;
-    }
-
-    public MessageType getType() {
-        return type;
-    }
-
-    public void setType(MessageType type) {
         this.type = type;
+        this.sendTime = sendTime;
     }
+
 }

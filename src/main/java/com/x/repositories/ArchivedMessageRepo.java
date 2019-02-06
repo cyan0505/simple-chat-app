@@ -1,9 +1,9 @@
 package com.x.repositories;
 
-import com.x.Model.ArchivedMessage;
+import com.x.Model.ChatMessage;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ArchivedMessageRepo extends CrudRepository<ArchivedMessage, Long> {
+public interface ArchivedMessageRepo extends CrudRepository<ChatMessage, Long> {
 }

@@ -17,9 +17,9 @@ public class ChatPageHistoryController {
         this.archive = archive;
     }
 
-    @GetMapping("/index")
+    @GetMapping("/home")
     public String sendHistory(Model model){
         model.addAttribute(archive.getAllArchivedMessages());
-        return "index";
+        return "home";
     }
 }

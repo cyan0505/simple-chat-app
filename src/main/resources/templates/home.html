@@ -16,8 +16,8 @@
             <h2>Chat Box</h2>
         </div>
         <div class="connecting">Connecting...</div>
-        <ul id="messageArea">
-
+        <ul id="messageArea" th:each="element : ${messagesList}">
+            <li th:text="${element}" th:class="chat-message"></li>
         </ul>
         <form id="messageForm" name="messageForm" nameForm="messageForm">
             <div class="form-group">

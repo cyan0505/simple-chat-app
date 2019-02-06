@@ -40,7 +40,7 @@ function onConnected() {
     stompClient.send("/app/chat.register",
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
-    )
+    );
 
     connectingElement.classList.add('hidden');
 }
@@ -117,5 +117,5 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-usernameForm.addEventListener('submit', connect, true)
-messageForm.addEventListener('submit', send, true)
+usernameForm.addEventListener('submit', connect, true);
+messageForm.addEventListener('submit', send, true);

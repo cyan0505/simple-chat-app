@@ -16,9 +16,9 @@ public class ArchivedMessage {
     private String sender;
     private String sendTime;
 
-    public ArchivedMessage(String content, String sener, String sendTime){
+    public ArchivedMessage(String content, String sender, String sendTime){
         this.content = content;
-        this.sender = sener;
+        this.sender = sender;
         this.sendTime = sendTime;
     }
 }

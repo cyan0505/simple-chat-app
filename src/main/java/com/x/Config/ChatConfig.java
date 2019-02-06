@@ -12,12 +12,12 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/javatechie").withSockJS();
+        registry.addEndpoint("/home/javatechie").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic");
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.enableSimpleBroker("/home/topic");
+        registry.setApplicationDestinationPrefixes("/home/app");
     }
 }

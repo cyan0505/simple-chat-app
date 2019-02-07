@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -34,6 +35,12 @@ public class ChatController {
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage){
         archivedMessageService.addNewArchivedMessage(chatMessage.getContent(), chatMessage.getSender(), chatMessage.getType());
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat.history")
+    @SendTo("/topic/history")
+    public ChatMessage sendHistoryMessage(ChatMessage chatMessage){
         return chatMessage;
     }
 

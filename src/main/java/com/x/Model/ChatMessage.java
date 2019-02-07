@@ -25,5 +25,4 @@ public class ChatMessage {
         this.type = type;
         this.sendTime = sendTime;
     }
-
 }

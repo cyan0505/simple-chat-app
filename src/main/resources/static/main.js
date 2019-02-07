@@ -4,6 +4,7 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
+var historyList;
 
 var stompClient = null;
 var username = null;
@@ -12,6 +13,15 @@ var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
+
+function getHistory() {
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://localhost:8080/history", false ); // false for synchronous request
+    xmlHttp.send( null );
+    console.log(xmlHttp);
+    return JSON.parse(xmlHttp.responseText);
+}
 
 function connect() {
     username = document.querySelector('#name').innerText.trim();
@@ -27,6 +37,15 @@ function connect() {
 
 
 function onConnected() {
+    stompClient.subscribe('/topic/history', onMessageReceived);
+
+    historyList = getHistory();
+
+    for (var i = 0; i < historyList.length; i++) {
+        stompClient.send("/app/chat.history", {}, JSON.stringify({content: historyList[i].content, sender: historyList[i].sender, type: historyList[i].type}));
+    }
+
+    stompClient.unsubscribe('/topic/history', onMessageReceived);
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
 
@@ -57,6 +76,22 @@ function send(event) {
         };
 
         stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+        messageInput.value = '';
+    }
+    event.preventDefault();
+}
+
+function sendHistory(event) {
+    var messageContent = messageInput.value.trim();
+
+    if(messageContent && stompClient) {
+        var chatMessage = {
+            sender: username,
+            content: messageInput.value,
+            type: 'CHAT'
+        };
+
+        stompClient.send("/app/chat.history", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -112,5 +147,6 @@ function getAvatarColor(messageSender) {
 }
 
 messageForm.addEventListener('submit', send, true);
+// messageForm.addEventListener('submit', sendHistory, true);
 
 connect();

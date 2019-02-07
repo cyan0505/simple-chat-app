@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import java.security.Principal;
 
 @Controller
 public class ChatPageHistoryController {
@@ -17,9 +18,9 @@ public class ChatPageHistoryController {
         this.archive = archive;
     }
 
-    @GetMapping("/home")
-    public String sendHistory(Model model){
-        model.addAttribute(archive.getAllArchivedMessages());
-        return "home";
+    @GetMapping("/")
+    public String sendHistory(Model model, Principal principal){
+        model.addAttribute("user", principal.getName());
+        return "index";
     }
 }

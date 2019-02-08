@@ -37,11 +37,11 @@ function connect() {
 
 
 function onConnected() {
-    var sub = stompClient.subscribe('/topic/history', onMessageReceived);
+    var historySub = stompClient.subscribe('/topic/history', onMessageReceived);
 
     historyList = getHistory();
     receiveHistory(historyList);
-    sub.unsubscribe();
+    historySub.unsubscribe();
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
 

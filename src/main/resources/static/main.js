@@ -37,15 +37,11 @@ function connect() {
 
 
 function onConnected() {
-    stompClient.subscribe('/topic/history', onMessageReceived);
+    var sub = stompClient.subscribe('/topic/history', onMessageReceived);
 
     historyList = getHistory();
-
-    for (var i = 0; i < historyList.length; i++) {
-        stompClient.send("/app/chat.history", {}, JSON.stringify({content: historyList[i].content, sender: historyList[i].sender, type: historyList[i].type}));
-    }
-
-    stompClient.unsubscribe('/topic/history', onMessageReceived);
+    receiveHistory(historyList);
+    sub.unsubscribe();
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
 
@@ -76,22 +72,6 @@ function send(event) {
         };
 
         stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
-        messageInput.value = '';
-    }
-    event.preventDefault();
-}
-
-function sendHistory(event) {
-    var messageContent = messageInput.value.trim();
-
-    if(messageContent && stompClient) {
-        var chatMessage = {
-            sender: username,
-            content: messageInput.value,
-            type: 'CHAT'
-        };
-
-        stompClient.send("/app/chat.history", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -147,6 +127,43 @@ function getAvatarColor(messageSender) {
 }
 
 messageForm.addEventListener('submit', send, true);
-// messageForm.addEventListener('submit', sendHistory, true);
+
+function receiveHistory(historyList) {
+    for (var i = 0; i < historyList.length; i++) {
+        var message = historyList[i];
+        var messageElement = document.createElement('li');
+
+        if(message.type === 'JOIN') {
+            messageElement.classList.add('event-message');
+            message.content = message.sender + ' joined!';
+        } else if (message.type === 'LEAVE') {
+            messageElement.classList.add('event-message');
+            message.content = message.sender + ' left!';
+        } else {
+            messageElement.classList.add('chat-message');
+
+            var avatarElement = document.createElement('i');
+            var avatarText = document.createTextNode(message.sender[0]);
+            avatarElement.appendChild(avatarText);
+            avatarElement.style['background-color'] = getAvatarColor(message.sender);
+
+            messageElement.appendChild(avatarElement);
+
+            var usernameElement = document.createElement('span');
+            var usernameText = document.createTextNode(message.sender);
+            usernameElement.appendChild(usernameText);
+            messageElement.appendChild(usernameElement);
+        }
+
+        var textElement = document.createElement('p');
+        var messageText = document.createTextNode(message.content);
+        textElement.appendChild(messageText);
+
+        messageElement.appendChild(textElement);
+
+        messageArea.appendChild(messageElement);
+        messageArea.scrollTop = messageArea.scrollHeight;
+    }
+}
 
 connect();

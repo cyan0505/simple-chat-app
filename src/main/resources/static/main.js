@@ -17,7 +17,7 @@ var colors = [
 function getHistory() {
 
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://localhost:8080/history", false ); // false for synchronous request
+    xmlHttp.open( "GET", "https://simple-chatter-box.herokuapp.com/history", false ); // false for synchronous request
     xmlHttp.send( null );
     console.log(xmlHttp);
     return JSON.parse(xmlHttp.responseText);

@@ -34,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("Damian").password(passwordEncoder().encode("dampass")).roles("User")
                 .and()
-                .withUser("Dawid").password(passwordEncoder().encode("dawpass")).roles("User");
+                .withUser("Dawid").password(passwordEncoder().encode("dawpass")).roles("User")
+                .and()
+                .withUser("guest").password(passwordEncoder().encode("guest")).roles("User");
     }
 
     @Bean
